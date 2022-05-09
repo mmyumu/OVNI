@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1045 &1
+EditorBuildSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/SampleScene.unity
+    guid: 2cda990e2423bbf4892e6590ba056729
+  - enabled: 1
+    path: Assets/Scenes/ShootEmUp.unity
+    guid: f2e543d23a34722489a175bc2c23ab14
+  m_configObjects:
+    com.unity.addressableassets: {fileID: 11400000, guid: 03e352f2582c8ab47bb011a1b3d73fea, type: 2}
+    com.unity.input.settings: {fileID: 11400000, guid: d6ccac866710d404b963498d8a8a1032, type: 2}
+    com.unity.localization.settings: {fileID: 11400000, guid: 044d9309f76eb3b4284e1a1f552e2738, type: 2}
