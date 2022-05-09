@@ -9,14 +9,17 @@ public class Boundaries : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        UpdateBoundaries();
     }
 
     // Update is called once per frame
     void Update()
     {
-        // If you want the min max values to update if the resolution changes 
-        // set them in update else set them in Start
+        UpdateBoundaries();
+    }
+
+    void UpdateBoundaries()
+    {
         float camDistance = Vector3.Distance(transform.position, Camera.main.transform.position);
         Vector2 bottomCorner = Camera.main.ViewportToWorldPoint(new Vector3(0, 0, camDistance));
         Vector2 topCorner = Camera.main.ViewportToWorldPoint(new Vector3(1, 1, camDistance));
