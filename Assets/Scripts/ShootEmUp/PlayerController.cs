@@ -58,9 +58,14 @@ public class PlayerController : MonoBehaviour
     private void Fire()
     {
         Vector3 spawnPos = transform.position;
-        spawnPos.y += transform.localScale.y / 2;
-        // Instantiate(bulletPrefab, spawnPos, new Quaternion(0f, 1f, 0f, 1f));
-        Instantiate(bulletPrefab, spawnPos, transform.rotation);
+        // spawnPos.y += transform.localScale.y / 2;
+
+
+        //GameObject bullet = Instantiate(bulletPrefab, spawnPos, new Quaternion(1f, 0f, 1f, 0f));
+        //GameObject bullet = Instantiate(bulletPrefab, spawnPos, transform.rotation);
+        GameObject bullet = Instantiate(bulletPrefab, spawnPos, Quaternion.Euler(new Vector3(0, 0, 0)) * transform.rotation );
+        
+        bullet.tag = "Player";
     }
 
     public void OnFire(InputAction.CallbackContext context)
