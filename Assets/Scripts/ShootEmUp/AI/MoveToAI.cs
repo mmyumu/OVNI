@@ -16,7 +16,7 @@ public class MoveToAI : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        if (Vector3.SqrMagnitude(transform.position -destPos) > 0.01) {
+        if (Vector3.SqrMagnitude(transform.position -destPos) > 0.001) {
             Vector3 direction = destPos - transform.position;
             direction.Normalize();
             transform.Translate(direction * moveSpeed * Time.deltaTime, Space.World);

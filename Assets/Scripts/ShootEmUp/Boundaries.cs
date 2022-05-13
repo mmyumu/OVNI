@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Boundaries : MonoBehaviour {
-    public float minX, maxX, minY, maxY;
+    [HideInInspector] public float minX, maxX, minY, maxY;
 
     // Start is called before the first frame update
     void Start() {
