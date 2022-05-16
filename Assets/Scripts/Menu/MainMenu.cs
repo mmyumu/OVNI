@@ -15,7 +15,7 @@ public class MainMenu : MonoBehaviour
     public void LoadGame()
     {
         Debug.Log("Load Game");
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene("ShootEmUp");
     }
 
     public void QuitGame()

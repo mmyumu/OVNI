@@ -10,17 +10,22 @@ public class PlayerController : MonoBehaviour {
     private Vector3 direction;
     private bool isFiring = false;
     private Boundaries boundaries;
+    private ShootEmUpManager shootEmUpManager;
 
 
     // Start is called before the first frame update
     void Start() {
         boundaries = gameObject.GetComponent<Boundaries>();
+        shootEmUpManager = GameObject.Find("ShootEmUpManager").GetComponent<ShootEmUpManager>();
+
     }
 
     // Update is called once per frame
     void Update() {
-        transform.Translate(direction * moveSpeed * Time.deltaTime);
-        CheckBoundaries();
+        if (shootEmUpManager.IsPlaying()) {
+            transform.Translate(direction * moveSpeed * Time.deltaTime);
+            CheckBoundaries();
+        }
     }
 
     private void CheckBoundaries() {
@@ -43,14 +48,14 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
-    public void OnMove(InputAction.CallbackContext context) {
-        direction = context.ReadValue<Vector2>();
-    }
-
     private void Fire() {
         Vector3 spawnPos = transform.position;
         GameObject bullet = Instantiate(bulletPrefab, spawnPos, Quaternion.Euler(new Vector3(0, 0, 0)) * transform.rotation);
         bullet.tag = "Player";
+    }
+
+    public void OnMove(InputAction.CallbackContext context) {
+        direction = context.ReadValue<Vector2>();
     }
 
     public void OnFire(InputAction.CallbackContext context) {
