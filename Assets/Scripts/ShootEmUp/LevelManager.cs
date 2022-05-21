@@ -5,13 +5,16 @@ using UnityEngine;
 public class LevelManager : MonoBehaviour {
     public GameObject basicEnemyPrefab;
     public Dictionary<string, GameObject> enemiesPrefabs;
+    public int waves = 3;
 
     private Boundaries boundaries;
     private bool isSpawning = false;
     private List<GameObject> currentEnemies = new List<GameObject>();
     private ShootEmUpManager shootEmUpManager;
+    private bool started = false;
 
-    private int waveCount = 0;
+    private int wave = 0;
+    
 
     enum Level {
         Low,
@@ -36,16 +39,38 @@ public class LevelManager : MonoBehaviour {
     void Update() {
         if (shootEmUpManager.IsPlaying()) {
             currentEnemies.RemoveAll(item => item == null);
+            
             if (currentEnemies.Count == 0) {
-                StartCoroutine(SpawnWave());
+                bool ended = CheckLevelEnded();
+
+                if (!ended) {
+                    StartCoroutine(SpawnWave());
+                }
             }
         }
     }
 
+    //private void StartLevel() {
+    //    if (!started) {
+
+    //    }
+        
+    //}
+
+    private bool CheckLevelEnded() {
+        if (wave >= waves) {
+            Debug.Log($"Level ended");
+            shootEmUpManager.MissionComplete();
+            return true;
+        }
+        return false;
+    }
+
     private IEnumerator SpawnWave(Level level = Level.Low, Size size = Size.Low) {
         if (!isSpawning) {
+            Debug.Log($"Spawning wave {wave}");
             isSpawning = true;
-            waveCount++;
+            wave++;
             // yield return new WaitForSeconds(1f);
             SpawnEnemy(-1, boundaries.maxY + 2);
             yield return new WaitForSeconds(1f);

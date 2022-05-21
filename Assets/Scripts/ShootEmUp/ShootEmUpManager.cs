@@ -44,4 +44,11 @@ public class ShootEmUpManager : MonoBehaviour {
         isPlaying = true;
         playingIntroduction = false;
     }
+
+    public void MissionComplete() {
+        isPlaying = false;
+        TMPro.TextMeshProUGUI tmpro = countdownText.GetComponent<TMPro.TextMeshProUGUI>();
+        tmpro.text = "Mission complete";
+        tmpro.enabled = true;
+    }
 }

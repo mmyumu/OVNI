@@ -49,9 +49,11 @@ public class PlayerController : MonoBehaviour {
     }
 
     private void Fire() {
-        Vector3 spawnPos = transform.position;
-        GameObject bullet = Instantiate(bulletPrefab, spawnPos, Quaternion.Euler(new Vector3(0, 0, 0)) * transform.rotation);
-        bullet.tag = "Player";
+        if (shootEmUpManager.IsPlaying()) {
+            Vector3 spawnPos = transform.position;
+            GameObject bullet = Instantiate(bulletPrefab, spawnPos, Quaternion.Euler(new Vector3(0, 0, 0)) * transform.rotation);
+            bullet.tag = "Player";
+        }
     }
 
     public void OnMove(InputAction.CallbackContext context) {
