@@ -11,7 +11,6 @@ public class LevelManager : MonoBehaviour {
     private bool isSpawning = false;
     private List<GameObject> currentEnemies = new List<GameObject>();
     private ShootEmUpManager shootEmUpManager;
-    private bool started = false;
 
     private int wave = 0;
     
@@ -49,13 +48,6 @@ public class LevelManager : MonoBehaviour {
             }
         }
     }
-
-    //private void StartLevel() {
-    //    if (!started) {
-
-    //    }
-        
-    //}
 
     private bool CheckLevelEnded() {
         if (wave >= waves) {

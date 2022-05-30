@@ -7,6 +7,7 @@ public class ShootEmUpManager : MonoBehaviour {
     public GameObject countdownText;
     private bool isPlaying = false;
     private bool playingIntroduction = true;
+    private bool missionComplete = false;
 
     // Start is called before the first frame update
     void Start() {
@@ -21,6 +22,10 @@ public class ShootEmUpManager : MonoBehaviour {
 
     public bool IsPlaying() {
         return isPlaying;
+    }
+
+    public bool IsMissionComplete() {
+        return missionComplete;
     }
 
     public bool PlayingIntroduction() {
@@ -47,6 +52,7 @@ public class ShootEmUpManager : MonoBehaviour {
 
     public void MissionComplete() {
         isPlaying = false;
+        missionComplete = true;
         TMPro.TextMeshProUGUI tmpro = countdownText.GetComponent<TMPro.TextMeshProUGUI>();
         tmpro.text = "Mission complete";
         tmpro.enabled = true;

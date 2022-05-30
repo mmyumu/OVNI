@@ -29,4 +29,36 @@ public class Boundaries : MonoBehaviour {
     public bool Inside(Vector3 position) {
         return minX < position.x && maxX > position.x && minY < position.y && maxY > position.y;
     }
+
+    public bool IsTop(Vector3 position) {
+        return Inside(position) && position.y >= ((maxY + minY) / 2);
+    }
+
+    public bool IsBottom(Vector3 position) {
+        return Inside(position) && position.y < ((maxY + minY) / 2);
+    }
+
+    public bool IsRight(Vector3 position) {
+        return Inside(position) && position.x >= ((maxX + minX) / 2);
+    }
+
+    public bool IsLeft(Vector3 position) {
+        return Inside(position) && position.x < ((maxX + minX) / 2);
+    }
+
+    public bool IsTopLeft(Vector3 position) {
+        return IsTop(position) && IsLeft(position);
+    }
+
+    public bool IsTopRight(Vector3 position) {
+        return IsTop(position) && IsRight(position);
+    }
+
+    public bool IsBottomLeft(Vector3 position) {
+        return IsBottom(position) && IsLeft(position);
+    }
+
+    public bool IsBottomRight(Vector3 position) {
+        return IsBottom(position) && IsRight(position);
+    }
 }
