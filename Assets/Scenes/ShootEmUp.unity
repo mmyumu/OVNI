@@ -515,7 +515,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 0.2
-  acceleration: 1.5
+  acceleration: 1.1
   topLeftPrefab: {fileID: 7402891884474916181, guid: de5a05fe8d9129f4383b8aea15e37bba, type: 3}
   topRightPrefab: {fileID: 7402891884474916181, guid: 42213db147511c642b224cdc81e86d64, type: 3}
   bottomLeftPrefab: {fileID: 7402891884474916181, guid: be1661e320ccfa34ea52d9c40cde3337, type: 3}
