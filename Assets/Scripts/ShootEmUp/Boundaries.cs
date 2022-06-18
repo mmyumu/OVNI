@@ -61,4 +61,8 @@ public class Boundaries : MonoBehaviour {
     public bool IsBottomRight(Vector3 position) {
         return IsBottom(position) && IsRight(position);
     }
+
+    public float GetCenterX() {
+        return (minX + maxX) / 2;
+    }
 }

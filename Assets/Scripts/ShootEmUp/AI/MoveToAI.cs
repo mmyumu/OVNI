@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class MoveToAI : MonoBehaviour {
     public float moveSpeed = 1.0f;
+    public Vector3 destPos;
     private Vector3 spawnPos;
-    private Vector3 destPos;
+    //private Vector3 destPos;
 
     // Start is called before the first frame update
     void Start() {

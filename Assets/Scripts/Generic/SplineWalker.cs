@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class SplineWalker : MonoBehaviour {
     public BezierSpline spline;
-    // public float duration;
     public float moveSpeed = 1f;
+    // public float duration = 5f;
     public bool lookForward;
     public SplineWalkerMode mode;
 
