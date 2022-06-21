@@ -6,18 +6,19 @@ using UnityEngine;
 
 public class WavesManager : MonoBehaviour {
     public GameObject enemyPrefab;
-    //public int numberOfEnemiesInSubwave = 3;
 
     private Boundaries boundaries;
     private ShootEmUpManager shootEmUpManager;
     private List<GameObject> currentEnemies = new List<GameObject>();
 
-    private EnemyDifficulties enemyDifficulties = new EnemyDifficulties();
+    private EnemyDifficulties enemyDifficulties;
 
     // Start is called before the first frame update
     void Start() {
         boundaries = GetComponent<Boundaries>();
         shootEmUpManager = GameObject.Find("ShootEmUpManager").GetComponent<ShootEmUpManager>();
+
+        enemyDifficulties = new EnemyDifficulties(shootEmUpManager);
     }
 
     // Update is called once per frame
@@ -64,68 +65,35 @@ public class WavesManager : MonoBehaviour {
     }
 
     private IEnumerator SpawnEnemy(EnemyDefinition enemyDefinition, int subwave, float subwaveTime,  int enemyNumber, int numberOfEnemiesInSubWave) {
-        //Vector3 spawnPos = new Vector3(x, y);
-
-        Vector3 spawnPos = ComputeSpawnPos(enemyDefinition.GetEnemyMovement(), subwave, enemyNumber, numberOfEnemiesInSubWave);
-        
+        Vector3 spawnPos = enemyDefinition.GetEnemyMovement().GetSpawnPos(boundaries, subwave, enemyNumber, numberOfEnemiesInSubWave);
         GameObject enemy = Instantiate(enemyPrefab, spawnPos, Quaternion.Euler(new Vector3(0, 0)) * enemyPrefab.transform.rotation);
-        currentEnemies.Add(enemy);
-
         AddComponents(enemy, enemyDefinition, spawnPos, subwaveTime, enemyNumber);
+        currentEnemies.Add(enemy);
 
         yield return new WaitForSeconds(1f);
     }
 
-    private Vector3 ComputeSpawnPos(EnemyMovement enemyMovement, int subwave, int enemyNumber, int numberOfEnemiesInSubWave) {
-        //float centerX = boundaries.GetCenterX();
-        //float x = centerX + enemyNumber;
-        //float y = boundaries.maxY + 1 + subwave;
-
-        return enemyMovement.GetSpawnPos(boundaries, subwave, enemyNumber, numberOfEnemiesInSubWave);
-        //switch (enemyMovement) {
-        //    case EnemyMovement.MoveToFromTop:
-        //        float offset = enemyNumber - ((numberOfEnemiesInSubWave - 1) / 2);
-        //        x = centerX + offset;
-        //        return new Vector3(x, y);
-        //    //case EnemyMovement.HorizontalSinusoide:
-        //    //    break;
-        //    case EnemyMovement.HorizontalWave:
-        //        break;
-        //}
-
-        //return spawnPos;
-    }
     private void AddComponents(GameObject enemy, EnemyDefinition enemyDefinition, Vector3 spawnPos, float subwaveTime, int enemyNumber) {
-        AddMovementComponent(enemy, enemyDefinition.GetEnemyMovement(), spawnPos, subwaveTime, enemyNumber);
-        //AddAimComponent(enemy, enemyDefinition.GetEnemyAim());
-        //AddShootComponent(enemy, enemyDefinition.GetEnemyShoot());
+        enemyDefinition.GetEnemyMovement().AddComponent(enemy, spawnPos, boundaries, subwaveTime, enemyNumber);
+
+        GameObject bulletPrefab = enemyDefinition.GetEnemyShoot().GetPrefab();
+        enemyDefinition.GetEnemyAim().AddComponent(enemy, bulletPrefab);
+
         Health health = enemy.GetComponent<Health>();
         health.max = health.current = enemyDefinition.GetHealth();
     }
 
-    private void AddMovementComponent(GameObject enemy, EnemyMovement enemyMovement, Vector3 spawnPos, float subwaveTime, int enemyNumber) {
-        enemyMovement.AddComponent(enemy, spawnPos, boundaries, subwaveTime, enemyNumber);
-        //switch (enemyMovement) {
-        //    case EnemyMovement.MoveToFromTop:
-        //        MoveToAI moveToAI = enemy.AddComponent<MoveToAI>();
-        //        moveToAI.destPos = new Vector3();
-        //        break;
-        //    case EnemyMovement.HorizontalWave:
-        //        SplineWalker splineWalker = enemy.AddComponent<SplineWalker>();
-        //        splineWalker.spline = GameObject.Find("HorizontalWave").GetComponent<BezierSpline>();
-        //        splineWalker.moveSpeed = 0.2f;
-        //        // splineWalker.mode = SplineWalker.SplineWalkerMode.PingPong;
-        //        break;
-        //}
-    }
+    //private void AddMovementComponent(GameObject enemy, EnemyMovement enemyMovement, Vector3 spawnPos, float subwaveTime, int enemyNumber) {
+    //    enemyMovement.AddComponent(enemy, spawnPos, boundaries, subwaveTime, enemyNumber);
+    //}
 
-    private void AddAimComponent(GameObject enemy, EnemyAim enemyAim) {
-        throw new NotImplementedException();
-    }
+    //private void AddAimComponent(GameObject enemy, EnemyAim enemyAim) {
+    //    throw new NotImplementedException();
+    //}
 
-    private void AddShootComponent(GameObject enemy, EnemyShoot enemyShoot) {
-        throw new NotImplementedException();
-    }
+    //private void AddShootComponent(GameObject enemy, EnemyShoot enemyShoot) {
+    //    throw new NotImplementedException();
+    //}
 
     private EnemyDefinition ComputeEnemyWithLevel(int level) {
         EnemyMovement enemyMovement = enemyDifficulties.GetRandomEnemyMovement();

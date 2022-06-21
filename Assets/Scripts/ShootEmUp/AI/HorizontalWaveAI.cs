@@ -10,11 +10,9 @@ public class HorizontalWaveAI : MonoBehaviour {
     public float? initialTime = null;
 
     private Vector3 spawnPos;
-    
 
     // Start is called before the first frame update
     void Start() {
-        //boundaries = GetComponent<Boundaries>();
         spawnPos = transform.position;
 
         if (spawnPos.y != destPos.y) {
@@ -27,16 +25,6 @@ public class HorizontalWaveAI : MonoBehaviour {
         if (initialTime == null) {
             initialTime = Time.time;
         }
-        //elapsedTime += Time.deltaTime;
-        //float cosineValue = Mathf.Cos(2.0f * Mathf.PI * frequency * elapsedTime);
-        //transform.position = spawnPos + (destPos - spawnPos) * 0.5f * (1 - cosineValue);
-
-        //Vector3 direction = destPos - transform.position;
-        //direction.Normalize();
-        //transform.Translate(direction * moveSpeed * Time.deltaTime, Space.World);
-
-        // float newX = (destPos.x - spawnPos.x) * Mathf.Sin(Time.time * moveSpeed);
-        //float newX = abs((x++ % 6) - 3);
 
         float xDiff = Mathf.Abs(destPos.x - spawnPos.x);
 

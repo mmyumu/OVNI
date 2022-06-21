@@ -16,6 +16,15 @@ public class EnemyDefinition {
         this.health = health;
     }
 
+    //public GameObject SpawnEnemy(GameObject enemyPrefab, Boundaries boundaries, int subwave, float subwaveTime, int enemyNumber, int numberOfEnemiesInSubWave) {
+    //    Vector3 spawnPos = movement.GetSpawnPos(boundaries, subwave, enemyNumber, numberOfEnemiesInSubWave);
+    //    return enemy;
+    //}
+
+    //public void AddComponents(GameObject enemy, Boundaries boundaries, Vector3 spawnPos, float subwaveTime, int enemyNumber) {
+
+    //}
+
     public EnemyMovement GetEnemyMovement() {
         return movement;
     }
@@ -41,9 +50,15 @@ public class EnemyDefinition {
 }
 
 public class EnemyDifficulties {
-    public List<EnemyMovement> enemyMovements = new List<EnemyMovement> { new MoveToFromTop(), new HorizontalSinusoide(), new HorizontalSinusoideSquad() };
-    public List<EnemyAim> enemyAim = new List<EnemyAim> { EnemyAim.Straight };
-    public List<EnemyShoot> enemyShoot = new List<EnemyShoot> { EnemyShoot.BulletLine };
+    public List<EnemyMovement> enemyMovements;
+    public List<EnemyAim> enemyAim;
+    public List<EnemyShoot> enemyShoot;
+
+    public EnemyDifficulties(ShootEmUpManager shootEmUpManager) {
+        enemyMovements = new List<EnemyMovement> { new MoveToFromTop(shootEmUpManager), new HorizontalSinusoide(shootEmUpManager), new HorizontalSinusoideSquad(shootEmUpManager) };
+        enemyAim = new List<EnemyAim> { new Straight(shootEmUpManager) };
+        enemyShoot = new List<EnemyShoot> { new CircleStandard(shootEmUpManager) };
+    }
 
     public EnemyMovement GetRandomEnemyMovement() {
         var random = new System.Random();
@@ -64,30 +79,50 @@ public class EnemyDifficulties {
     }    
 }
 public class EnemyDifficulty {
-    public EnemyDifficulty() {
+    protected ShootEmUpManager shootEmUpManager;
+    public EnemyDifficulty(ShootEmUpManager shootEmUpManager) {
+        this.shootEmUpManager = shootEmUpManager;
     }
 
     public int Difficulty { get; protected set; }
 }
 
 public abstract class EnemyMovement : EnemyDifficulty {
+    protected EnemyMovement(ShootEmUpManager shootEmUpManager) : base(shootEmUpManager) {
+    }
+
     public abstract void AddComponent(GameObject enemy, Vector3 spawnPos, Boundaries boundaries, float subwaveTime, int enemyNumber);
     public abstract Vector3 GetSpawnPos(Boundaries boundaries, int subwave, int enemyNumber, int numberOfEnemiesInSubWave);
 }
 
-public class EnemyAim : EnemyDifficulty {
-    public static EnemyAim Straight = new EnemyAim { Difficulty = 2 };
+public abstract class EnemyAim : EnemyDifficulty {
+    protected EnemyAim(ShootEmUpManager shootEmUpManager) : base(shootEmUpManager) {
+    }
+
+    public abstract void AddComponent(GameObject enemy, GameObject bulletPrefab);
 }
 
-public class EnemyShoot : EnemyDifficulty {
-    public static EnemyShoot BulletLine = new EnemyShoot { Difficulty = 2 };
+public abstract class EnemyShoot : EnemyDifficulty {
+    protected EnemyShoot(ShootEmUpManager shootEmUpManager) : base(shootEmUpManager) {
+    }
+
+    public abstract GameObject GetPrefab();
+
+    protected GameObject GetPrefab(string key) {
+        BulletsPrefabs bulletsPrefabs = shootEmUpManager.GetComponent<BulletsPrefabs>();
+        return bulletsPrefabs.GetKey(key);
+    }
 }
 
-/***
+/**
  * Concrete classes for enemy definitions 
  */
+
+/*
+ * Movements
+ */
 public class MoveToFromTop : EnemyMovement {
-    public MoveToFromTop() {
+    public MoveToFromTop(ShootEmUpManager shootEmUpManager) : base(shootEmUpManager) {
         Difficulty = 2;
     }
 
@@ -105,39 +140,64 @@ public class MoveToFromTop : EnemyMovement {
 }
 
 public class HorizontalSinusoide : EnemyMovement {
-    public HorizontalSinusoide() {
+    public HorizontalSinusoide(ShootEmUpManager shootEmUpManager) : base(shootEmUpManager) {
         Difficulty = 10;
     }
 
     public override void AddComponent(GameObject enemy, Vector3 spawnPos, Boundaries boundaries, float subwaveTime, int enemyNumber) {
-        HorizontalWaveAI horizontalSinusoide = enemy.AddComponent<HorizontalWaveAI>();
-        horizontalSinusoide.destPos = new Vector3(boundaries.maxX / 2 + 0.5f, spawnPos.y);
-        horizontalSinusoide.moveSpeed = 4.0f;
-        horizontalSinusoide.frequency = 4.0f;
-        horizontalSinusoide.xOffset = enemyNumber;
-
-        //SplineWalker splineWalker = enemy.AddComponent<SplineWalker>();
-        //splineWalker.spline = GameObject.Find("HorizontalWave").GetComponent<BezierSpline>();
-        //splineWalker.moveSpeed = 0.2f;
-        //splineWalker.mode = SplineWalker.SplineWalkerMode.PingPong;
+        HorizontalWaveAI horizontalWave = enemy.AddComponent<HorizontalWaveAI>();
+        UpdateComponent(horizontalWave, spawnPos, boundaries, enemyNumber);
     }
 
     public override Vector3 GetSpawnPos(Boundaries boundaries, int subwave, int enemyNumber, int numberOfEnemiesInSubWave) {
         return new Vector3(boundaries.minX / 2 - 0.5f, boundaries.maxY - subwave - 1);
     }
+
+    protected void UpdateComponent(HorizontalWaveAI horizontalWave, Vector3 spawnPos, Boundaries boundaries, int enemyNumber) {
+        horizontalWave.destPos = new Vector3(boundaries.maxX / 2 + 0.5f, spawnPos.y);
+        horizontalWave.moveSpeed = 4.0f;
+        horizontalWave.frequency = 4.0f;
+        horizontalWave.xOffset = enemyNumber;
+    }
 }
 
 public class HorizontalSinusoideSquad : HorizontalSinusoide {
-    public HorizontalSinusoideSquad() {
+    public HorizontalSinusoideSquad(ShootEmUpManager shootEmUpManager) : base(shootEmUpManager) {
         Difficulty = 8;
     }
 
     public override void AddComponent(GameObject enemy, Vector3 spawnPos, Boundaries boundaries, float subwaveTime, int enemyNumber) {
-        base.AddComponent(enemy, spawnPos, boundaries, subwaveTime, enemyNumber);
-        
-        HorizontalWaveAI horizontalSinusoide = enemy.AddComponent<HorizontalWaveAI>();
-        
+        HorizontalWaveAI horizontalWave = enemy.AddComponent<HorizontalWaveAI>();
+        UpdateComponent(horizontalWave, spawnPos, boundaries, enemyNumber);
+
         // Giving same initial time for all the enemies of the subwave will force them to spawn together as a squad
-        horizontalSinusoide.initialTime = subwaveTime;
+        horizontalWave.initialTime = subwaveTime;
+    }
+}
+
+/*
+ * Aim
+ */
+public class Straight : EnemyAim {
+    public Straight(ShootEmUpManager shootEmUpManager) : base(shootEmUpManager) {
+        Difficulty = 2;
+    }
+    
+    public override void AddComponent(GameObject enemy, GameObject bulletPrefab) {
+        StraightShootAI straightShootAI = enemy.AddComponent<StraightShootAI>();
+        straightShootAI.bulletPrefab = bulletPrefab;
+    }
+}
+
+/*
+ * Shoot/Bullets
+ */
+public class CircleStandard: EnemyShoot {
+    public CircleStandard(ShootEmUpManager shootEmUpManager) : base(shootEmUpManager) {
+        Difficulty = 2;
+    }
+
+    public override GameObject GetPrefab() {
+        return GetPrefab("CircleBullet");
     }
 }

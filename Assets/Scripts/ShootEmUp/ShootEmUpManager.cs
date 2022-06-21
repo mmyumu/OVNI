@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class ShootEmUpManager : MonoBehaviour {
     public GameObject countdownText;
+
     private bool isPlaying = false;
     private bool playingIntroduction = true;
     private bool missionComplete = false;

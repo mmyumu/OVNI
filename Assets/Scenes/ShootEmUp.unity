@@ -513,6 +513,7 @@ GameObject:
   m_Component:
   - component: {fileID: 371813046}
   - component: {fileID: 371813047}
+  - component: {fileID: 371813048}
   m_Layer: 0
   m_Name: ShootEmUpManager
   m_TagString: Untagged
@@ -548,6 +549,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   countdownText: {fileID: 1417670925}
+--- !u!114 &371813048
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 371813045}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ff743281721d9a47907b036da2960eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  keys:
+  - CircleBullet
+  - SquareBullet
+  values:
+  - {fileID: 3508013435276672497, guid: 6b2593553672638438ce4345c2a8843a, type: 3}
+  - {fileID: 8140037184351481248, guid: 98035ec3e9a1c4c44a81e8012629fe45, type: 3}
 --- !u!1 &656368994
 GameObject:
   m_ObjectHideFlags: 0
