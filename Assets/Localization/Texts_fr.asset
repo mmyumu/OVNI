@@ -30,6 +30,10 @@ MonoBehaviour:
     m_Localized: Quitter
     m_Metadata:
       m_Items: []
+  - m_Id: 28654044264255488
+    m_Localized: Continuer
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

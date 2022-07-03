@@ -27,6 +27,10 @@ MonoBehaviour:
     m_Key: MainMenu/Main Camera/Canvas/Quit Button/Text
     m_Metadata:
       m_Items: []
+  - m_Id: 28654044264255488
+    m_Key: MainMenu/Main Camera/Canvas/ContinueGame Button/Text
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

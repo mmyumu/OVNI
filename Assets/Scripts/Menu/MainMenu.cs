@@ -4,23 +4,30 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class MainMenu : MonoBehaviour
-{
+public class MainMenu : MonoBehaviour {
     public Button defaultButton;
-    private void Start()
-    {
+    private void Start() {
         defaultButton.Select();
     }
 
-    public void LoadGame()
-    {
-        Debug.Log("Load Game");
-        SceneManager.LoadScene("ShootEmUp");
+    public void NewGame() {
+        ResetPrefs();
+        Debug.Log("New Game");
+        SceneManager.LoadScene("World");
     }
 
-    public void QuitGame()
-    {
+    public void ContinueGame() {
+        Debug.Log("Continue Game");
+        SceneManager.LoadScene("World");
+    }
+
+    public void QuitGame() {
         Debug.Log("Quit game");
         Application.Quit();
+    }
+
+    private void ResetPrefs() {
+        PlayerPrefs.DeleteAll();
+        PlayerPrefs.SetInt("Money", 100000);
     }
 }

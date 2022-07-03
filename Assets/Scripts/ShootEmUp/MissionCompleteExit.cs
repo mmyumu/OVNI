@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MissionCompleteExit : MonoBehaviour {
     public float moveSpeed = 1f;
@@ -36,9 +37,13 @@ public class MissionCompleteExit : MonoBehaviour {
                 GameObject splinePrefab = GetSplinePrefab();
                 GameObject go = Instantiate(splinePrefab, transform.position, Quaternion.Euler(new Vector3(0, 0, 0)) * transform.rotation);
                 spline = go.GetComponent<BezierSpline>();
-                StartCoroutine(WaitBeforeExit());
+                StartCoroutine(WaitBeforeExitMove());
             } else if (!waiting) {
-                Exit();
+                if(progress < 1) {
+                    ExitMove();
+                } else {
+                    StartCoroutine(WaitBeforeExit());
+                }
             }
         }
     }
@@ -52,12 +57,12 @@ public class MissionCompleteExit : MonoBehaviour {
         return topLeftPrefab;
     }
 
-    private IEnumerator WaitBeforeExit() {
+    private IEnumerator WaitBeforeExitMove() {
         yield return new WaitForSeconds(2f);
         waiting = false;
     }
 
-    private void Exit() {
+    private void ExitMove() {
         currentSpeed = currentSpeed + (Time.deltaTime * acceleration);
         progress += GetProgress();
         if (progress > 1f) {
@@ -70,5 +75,10 @@ public class MissionCompleteExit : MonoBehaviour {
 
     private float GetProgress() {
         return Time.deltaTime * currentSpeed;
+    }
+
+    private IEnumerator WaitBeforeExit() {
+        yield return new WaitForSeconds(2f);
+        SceneManager.LoadScene("World");
     }
 }
