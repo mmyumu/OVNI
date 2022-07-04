@@ -81,6 +81,9 @@ public class WavesManager : MonoBehaviour {
 
         Health health = enemy.GetComponent<Health>();
         health.max = health.current = enemyDefinition.GetHealth();
+
+        Loots loots = enemy.GetComponent<Loots>();
+        loots.money = 500;
     }
 
     //private void AddMovementComponent(GameObject enemy, EnemyMovement enemyMovement, Vector3 spawnPos, float subwaveTime, int enemyNumber) {

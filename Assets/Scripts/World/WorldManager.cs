@@ -8,12 +8,14 @@ public class WorldManager : MonoBehaviour {
     public Button defaultButton;
     public List<Button> menuButtons;
     public GameObject cursor;
+    public GameObject moneyText;
 
     private bool mapEnabled = false;
 
     // Start is called before the first frame update
     void Start() {
         defaultButton.Select();
+        UpdateMoney();
     }
 
     // Update is called once per frame
@@ -49,5 +51,10 @@ public class WorldManager : MonoBehaviour {
         foreach (Button menuButton in menuButtons) {
             menuButton.interactable = interactable;
         }
+    }
+
+    private void UpdateMoney() {
+        TMPro.TextMeshProUGUI tmpro = moneyText.GetComponent<TMPro.TextMeshProUGUI>();
+        tmpro.text = PlayerPrefs.GetInt("money").ToString("C");
     }
 }
