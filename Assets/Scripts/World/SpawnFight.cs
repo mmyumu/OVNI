@@ -19,7 +19,8 @@ public class SpawnFight : MonoBehaviour {
             foreach (PolygonCollider2D polygon in polygons) {
                 if (polygon.OverlapPoint(new Vector2(x, y))) {
                     onGround = true;
-                    Instantiate(fightPrefab, new Vector3(x, y, 0), Quaternion.Euler(new Vector3(0, 0, 0)) * transform.rotation);
+                    GameObject fight = Instantiate(fightPrefab, new Vector3(x, y, 0), Quaternion.Euler(new Vector3(0, 0, 0)) * transform.rotation);
+                    fight.GetComponent<SpriteRenderer>().sortingOrder = 10;
                 }
             }
         }
